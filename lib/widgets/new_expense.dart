@@ -15,6 +15,7 @@ class NewExpense extends StatefulWidget {
 class _NewExpenseState extends State<NewExpense> {
   final _titleController = TextEditingController();
   final _costController = TextEditingController();
+  Category _selectedCategory = Category.leisure;
   DateTime? _selectedDate;
 
   void _openDatePicker() async {
@@ -27,10 +28,42 @@ class _NewExpenseState extends State<NewExpense> {
         firstDate: firstDate,
         lastDate: now);
     setState(() {
-      print(_selectedDate);
       _selectedDate = pickedDate;
-      print(_selectedDate);
     });
+  }
+
+  void _submitNewExpense() {
+    final costAmount = double.tryParse(_costController.text);
+    if (_titleController.text.trim().isEmpty ||
+        costAmount == null ||
+        costAmount <= 0 ||
+        _selectedDate == null) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Invalid input'),
+          content: const Text(
+              'Please make sure a valid title, amount, date and category was entered.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+              },
+              child: const Text('Okay'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    Expense expense = Expense(
+        title: _titleController.text,
+        amount: costAmount,
+        date: _selectedDate!,
+        category: _selectedCategory);
+    widget.addExpenseFunc(expense);
+    Navigator.pop(context);
   }
 
   @override
@@ -43,7 +76,7 @@ class _NewExpenseState extends State<NewExpense> {
   @override
   Widget build(context) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
       child: Column(
         children: [
           TextField(
@@ -86,25 +119,41 @@ class _NewExpenseState extends State<NewExpense> {
               )
             ],
           ),
+          const SizedBox(height: 16),
           Row(
             children: [
-              ElevatedButton(
+              DropdownButton(
+                value: _selectedCategory,
+                items: Category.values
+                    .map(
+                      (category) => DropdownMenuItem(
+                        value: category,
+                        child: Text(
+                          category.name.toUpperCase(),
+                        ),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (value) {
+                  setState(
+                    () {
+                      if (value == null) {
+                        return;
+                      }
+                      _selectedCategory = value;
+                    },
+                  );
+                },
+              ),
+              const Spacer(),
+              TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
                 child: const Text("Cancel"),
               ),
-              const Spacer(),
               ElevatedButton(
-                onPressed: () {
-                  Expense expense = Expense(
-                      title: _titleController.text,
-                      amount: double.parse(_costController.text),
-                      date: _selectedDate!,
-                      category: Category.food);
-                  widget.addExpenseFunc(expense);
-                  Navigator.pop(context);
-                },
+                onPressed: _submitNewExpense,
                 child: const Text("Save Expense"),
               ),
             ],

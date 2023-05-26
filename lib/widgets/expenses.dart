@@ -35,16 +35,51 @@ class _ExpensesState extends State<Expenses> {
     });
   }
 
+  void removeExpense(Expense expense) {
+    final expenseIndex = _expenseList.indexOf(expense);
+    setState(() {
+      _expenseList.remove(expense);
+    });
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 5),
+        content: const Text('Expense deleted.'),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            setState(() {
+              _expenseList.insert(expenseIndex, expense);
+            });
+          },
+        ),
+      ),
+    );
+  }
+
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
-        context: context,
-        builder: (ctx) => NewExpense(
-              addExpenseFunc: addExpense,
-            ));
+      isScrollControlled: true,
+      context: context,
+      builder: (ctx) => NewExpense(
+        addExpenseFunc: addExpense,
+      ),
+    );
   }
 
   @override
   Widget build(context) {
+    Widget maincontent = const Center(
+      child: Text('No Expenses Found'),
+    );
+
+    if (_expenseList.isNotEmpty) {
+      maincontent = ExpensesList(
+        expenses: _expenseList,
+        onDismissedFunction: removeExpense,
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -64,7 +99,9 @@ class _ExpensesState extends State<Expenses> {
       body: Column(
         children: [
           const Text("Expenses chart"),
-          ExpensesList(expenses: _expenseList),
+          Expanded(
+            child: maincontent,
+          ),
         ],
       ),
     );
