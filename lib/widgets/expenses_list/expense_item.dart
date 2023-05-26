@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:expense_tracker/models/expense.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class ExpenseItem extends StatelessWidget {
   const ExpenseItem({super.key, required this.expense});
@@ -10,7 +9,7 @@ class ExpenseItem extends StatelessWidget {
   @override
   Widget build(context) {
     return Card(
-      color: Color.fromARGB(255, 213, 188, 255),
+      color: const Color.fromARGB(255, 213, 188, 255),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
         child: Column(

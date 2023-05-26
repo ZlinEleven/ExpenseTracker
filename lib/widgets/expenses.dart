@@ -1,6 +1,8 @@
 import 'package:expense_tracker/widgets/expenses_list/expenses_list.dart';
+import 'package:expense_tracker/widgets/new_expense.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_tracker/models/expense.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Expenses extends StatefulWidget {
   const Expenses({super.key});
@@ -27,20 +29,43 @@ class _ExpensesState extends State<Expenses> {
     ),
   ];
 
+  void addExpense(Expense expense) {
+    setState(() {
+      _expenseList.add(expense);
+    });
+  }
+
+  void _openAddExpenseOverlay() {
+    showModalBottomSheet(
+        context: context,
+        builder: (ctx) => NewExpense(
+              addExpenseFunc: addExpense,
+            ));
+  }
+
   @override
   Widget build(context) {
     return Scaffold(
-      body: Container(
-        child: Column(
-          children: [
-            AppBar(
-              title: const Text("Expense Tracker"),
-              backgroundColor: const Color.fromARGB(255, 43, 11, 97),
-            ),
-            const Text("Expenses chart"),
-            ExpensesList(expenses: _expenseList),
-          ],
+      appBar: AppBar(
+        title: Text(
+          "Expense Tracker",
+          style: GoogleFonts.lato(
+            color: Colors.white,
+          ),
         ),
+        backgroundColor: const Color.fromARGB(255, 43, 11, 97),
+        actions: [
+          IconButton(
+              onPressed: _openAddExpenseOverlay,
+              icon: const Icon(Icons.add),
+              color: Colors.white),
+        ],
+      ),
+      body: Column(
+        children: [
+          const Text("Expenses chart"),
+          ExpensesList(expenses: _expenseList),
+        ],
       ),
     );
   }
