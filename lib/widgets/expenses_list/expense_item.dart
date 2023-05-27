@@ -9,7 +9,7 @@ class ExpenseItem extends StatelessWidget {
   @override
   Widget build(context) {
     return Card(
-      color: const Color.fromARGB(255, 213, 188, 255),
+      //color: const Color.fromARGB(255, 213, 188, 255),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
         child: Column(

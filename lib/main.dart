@@ -3,11 +3,33 @@ import 'package:flutter/material.dart';
 import 'package:expense_tracker/widgets/expenses.dart';
 
 var customColorScheme =
-    ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 96, 58, 181));
+    ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 97, 58, 181));
+
+var customDarkColorScheme = ColorScheme.fromSeed(
+  brightness: Brightness.dark,
+  seedColor: const Color.fromARGB(255, 5, 99, 125),
+);
 
 void main() {
   runApp(
     MaterialApp(
+      darkTheme: ThemeData.dark().copyWith(
+        useMaterial3: true,
+        colorScheme: customDarkColorScheme,
+        cardTheme: CardTheme(
+          color: customDarkColorScheme.secondaryContainer,
+          margin: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 8,
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: customDarkColorScheme.primaryContainer,
+            foregroundColor: customDarkColorScheme.onPrimaryContainer,
+          ),
+        ),
+      ),
       theme: ThemeData().copyWith(
         useMaterial3: true,
         scaffoldBackgroundColor: customColorScheme.secondaryContainer,
@@ -17,8 +39,9 @@ void main() {
             backgroundColor: customColorScheme.primaryContainer,
           ),
         ),
-        cardTheme: const CardTheme(
-          margin: EdgeInsets.symmetric(
+        cardTheme: CardTheme(
+          color: customColorScheme.secondaryContainer,
+          margin: const EdgeInsets.symmetric(
             horizontal: 16,
             vertical: 8,
           ),
@@ -31,6 +54,7 @@ void main() {
               ),
             ),
       ),
+      themeMode: ThemeMode.system,
       home: const Expenses(),
     ),
   );
