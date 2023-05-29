@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter/services.dart';
 import 'package:expense_tracker/widgets/expenses.dart';
 
 var customColorScheme =
@@ -11,6 +11,10 @@ var customDarkColorScheme = ColorScheme.fromSeed(
 );
 
 void main() {
+  //WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.portraitUp,
+  // ]).then((fn) {
   runApp(
     MaterialApp(
       darkTheme: ThemeData.dark().copyWith(
@@ -32,8 +36,12 @@ void main() {
       ),
       theme: ThemeData().copyWith(
         useMaterial3: true,
-        scaffoldBackgroundColor: customColorScheme.secondaryContainer,
+        //scaffoldBackgroundColor: customColorScheme.secondaryContainer,
         colorScheme: customColorScheme,
+        appBarTheme: const AppBarTheme().copyWith(
+          backgroundColor: customColorScheme.onPrimaryContainer,
+          foregroundColor: customColorScheme.primaryContainer,
+        ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: customColorScheme.primaryContainer,
@@ -59,3 +67,5 @@ void main() {
     ),
   );
 }
+  // );
+// }
