@@ -108,163 +108,126 @@ class _NewExpenseState extends State<NewExpense> {
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.fromLTRB(16, 16, 16, keyboardSpace + 16),
-            child: Column(
-              children: [
-                if (width >= 600)
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _titleController,
-                          maxLength: 50,
-                          decoration: const InputDecoration(
-                            label: Text('Title'),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 24),
-                      Expanded(
-                        child: TextField(
-                          controller: _costController,
-                          keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                            prefixText: '\$ ',
-                            label: Text('Amount'),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                else
-                  TextField(
-                    controller: _titleController,
-                    maxLength: 50,
-                    decoration: const InputDecoration(
-                      label: Text('Title'),
-                    ),
-                  ),
-                if (width >= 600)
-                  Row(
-                    children: [
-                      DropdownButton(
-                        value: _selectedCategory,
-                        items: Category.values
-                            .map(
-                              (category) => DropdownMenuItem(
-                                value: category,
-                                child: Text(
-                                  category.name.toUpperCase(),
-                                ),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) {
-                          setState(
-                            () {
-                              if (value == null) {
-                                return;
-                              }
-                              _selectedCategory = value;
-                            },
-                          );
-                        },
-                      ),
-                      const SizedBox(width: 24),
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(_selectedDate == null
-                                ? 'Select Date'
-                                : dateFormatter.format(_selectedDate!)),
-                            IconButton(
-                              onPressed: () {
-                                _openDatePicker();
-                              },
-                              icon: const Icon(
-                                Icons.calendar_month,
-                              ),
+            child: Form(
+              child: Column(
+                children: [
+                  if (width >= 600)
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: _titleController,
+                            maxLength: 50,
+                            decoration: const InputDecoration(
+                              label: Text('Title'),
                             ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  )
-                else
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _costController,
-                          keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                            prefixText: '\$ ',
-                            label: Text('Amount'),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(_selectedDate == null
-                                ? 'Select Date'
-                                : dateFormatter.format(_selectedDate!)),
-                            IconButton(
-                              onPressed: () {
-                                _openDatePicker();
-                              },
-                              icon: const Icon(
-                                Icons.calendar_month,
-                              ),
+                        const SizedBox(width: 24),
+                        Expanded(
+                          child: TextFormField(
+                            controller: _costController,
+                            keyboardType: TextInputType.number,
+                            decoration: const InputDecoration(
+                              prefixText: '\$ ',
+                              label: Text('Amount'),
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                if (width >= 600)
-                  Row(children: [
-                    const Spacer(),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Cancel"),
-                    ),
-                    ElevatedButton(
-                      onPressed: _submitNewExpense,
-                      child: const Text("Save Expense"),
+                      ],
                     )
-                  ])
-                else
-                  Row(
-                    children: [
-                      DropdownButton(
-                        value: _selectedCategory,
-                        items: Category.values
-                            .map(
-                              (category) => DropdownMenuItem(
-                                value: category,
-                                child: Text(
-                                  category.name.toUpperCase(),
+                  else
+                    TextFormField(
+                      controller: _titleController,
+                      maxLength: 50,
+                      decoration: const InputDecoration(
+                        label: Text('Title'),
+                      ),
+                    ),
+                  if (width >= 600)
+                    Row(
+                      children: [
+                        DropdownButtonFormField(
+                          value: _selectedCategory,
+                          items: Category.values
+                              .map(
+                                (category) => DropdownMenuItem(
+                                  value: category,
+                                  child: Text(
+                                    category.name.toUpperCase(),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) {
+                            setState(
+                              () {
+                                if (value == null) {
+                                  return;
+                                }
+                                _selectedCategory = value;
+                              },
+                            );
+                          },
+                        ),
+                        const SizedBox(width: 24),
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(_selectedDate == null
+                                  ? 'Select Date'
+                                  : dateFormatter.format(_selectedDate!)),
+                              IconButton(
+                                onPressed: () {
+                                  _openDatePicker();
+                                },
+                                icon: const Icon(
+                                  Icons.calendar_month,
                                 ),
                               ),
-                            )
-                            .toList(),
-                        onChanged: (value) {
-                          setState(
-                            () {
-                              if (value == null) {
-                                return;
-                              }
-                              _selectedCategory = value;
-                            },
-                          );
-                        },
-                      ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
+                  else
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: _costController,
+                            keyboardType: TextInputType.number,
+                            decoration: const InputDecoration(
+                              prefixText: '\$ ',
+                              label: Text('Amount'),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(_selectedDate == null
+                                  ? 'Select Date'
+                                  : dateFormatter.format(_selectedDate!)),
+                              IconButton(
+                                onPressed: () {
+                                  _openDatePicker();
+                                },
+                                icon: const Icon(
+                                  Icons.calendar_month,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  if (width >= 600)
+                    Row(children: [
                       const Spacer(),
                       TextButton(
                         onPressed: () {
@@ -275,10 +238,49 @@ class _NewExpenseState extends State<NewExpense> {
                       ElevatedButton(
                         onPressed: _submitNewExpense,
                         child: const Text("Save Expense"),
-                      ),
-                    ],
-                  ),
-              ],
+                      )
+                    ])
+                  else
+                    Row(
+                      children: [
+                        DropdownButton(
+                          value: _selectedCategory,
+                          items: Category.values
+                              .map(
+                                (category) => DropdownMenuItem(
+                                  value: category,
+                                  child: Text(
+                                    category.name.toUpperCase(),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) {
+                            setState(
+                              () {
+                                if (value == null) {
+                                  return;
+                                }
+                                _selectedCategory = value;
+                              },
+                            );
+                          },
+                        ),
+                        const Spacer(),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text("Cancel"),
+                        ),
+                        ElevatedButton(
+                          onPressed: _submitNewExpense,
+                          child: const Text("Save Expense"),
+                        ),
+                      ],
+                    ),
+                ],
+              ),
             ),
           ),
         ),
